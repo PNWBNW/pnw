@@ -190,4 +190,4 @@ Connect a Shield / Puzzle / Leo / Fox / Soter wallet on Aleo testnet and you're 
 
 ## License
 
-Proprietary. See [`pnw_mvp_v2/LICENSE.md`](./pnw_mvp_v2/LICENSE.md).
+Proprietary — PNW Smart Contract License v1.7. See [`LICENSE.md`](./LICENSE.md).

@@ -18,7 +18,7 @@ subject to the following conditions:
 
 - No **artificial intelligence (AI), autonomous system, government entity, or third party** may:
   - Take ownership, modify governance mechanisms, or exert control over this Software.
-  - Override SubDAO voting, payroll processing authority, or platform governance.
+  - Override payroll processing authority or platform governance.
 - AI-based decision-making may only be used for optional analytics or enhancements but
   **must not replace human governance or operational control**.
 - No government agency or external entity may seize control, impose modifications,
@@ -68,4 +68,6 @@ subject to the following conditions:
 
 ---
 
-For inquiries regarding licensing, please contact: **pnw.x.farms@gmail.com**
+For inquiries regarding licensing, please contact:
+- **Email:** pnw.x.farms@gmail.com
+- **Telegram:** @ProvenNationalWorkers
