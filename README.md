@@ -40,9 +40,14 @@ Proven National Workers is a privacy-preserving payroll framework built on the
 Aleo blockchain. An employer uses the portal to:
 
 1. **Onboard workers** — broadcast an encrypted job offer directly on-chain; the
-   worker's wallet receives it as a private record and accepts it with a second
-   on-chain transition. The result is a private `FinalAgreement` record binding
-   the two wallets.
+   worker's wallet receives it as a private record. The full agreement terms
+   are encrypted client-side (AES-256-GCM) and stored on IPFS via Pinata — only
+   the two parties hold the decryption key, which is derived from the private
+   `parties_key` field inside their `FinalAgreement` records. The worker fetches
+   the encrypted terms from IPFS, decrypts locally, reviews, and accepts with
+   a second on-chain transition. The result is a private `FinalAgreement` record
+   binding the two wallets — no plaintext terms ever touch the blockchain or
+   any centralized server.
 2. **Run payroll** — build a payroll table client-side, compile it into a
    deterministic `PayrollRunManifest`, and settle each row on-chain via the
    `payroll_core_v2::execute_payroll` transition. The transition atomically
@@ -50,13 +55,18 @@ Aleo blockchain. An employer uses the portal to:
    paystub receipt records, and anchors an audit event.
 3. **Anchor the run** — mint a cycle NFT via `payroll_nfts_v2::mint_cycle_nft`
    that commits to the whole run's batch root for auditability.
-4. **Issue credentials and audit authorizations** — via `credential_nft.aleo`
-   and `audit_nft.aleo` respectively, both of which are commitment-only
-   (no fund movement).
+4. **Issue credentials and audit authorizations** — via
+   `credential_nft_v3.aleo` (on-chain authorization enforced) and
+   `audit_nft.aleo` respectively, both commitment-only (no fund movement).
+   Each credential generates a unique topographic blueprint card rendered
+   deterministically from its hash — the worker and employer both see the
+   same visual fingerprint.
 
 All sensitive data — wage amounts, worker identities, agreement terms —
-lives inside private Aleo records decoded locally via the user's view key.
-Nothing plaintext ever hits public on-chain state.
+lives inside private Aleo records decoded locally by the connected wallet.
+PDFs (paystubs, credentials, audit certificates) are generated client-side
+only — no upload, no third-party PDF service. Nothing plaintext ever hits
+public on-chain state.
 
 ---
 
@@ -146,9 +156,17 @@ Connect a Shield / Puzzle / Leo / Fox / Soter wallet on Aleo testnet and you're 
    database. All sensitive values live in session memory only.
 2. No plaintext identity or salary on public chain state. Public mappings hold
    hashes and anchors only — enforced by `pnw_mvp_v2` programs.
-3. PDFs are generated client-side only. No upload, no third-party PDF service.
-4. The `PayrollRunManifest` is immutable once compiled. Content-addressed by
+3. Agreement terms are encrypted client-side (AES-256-GCM) before being pinned
+   to IPFS. Only the two parties to the agreement hold the decryption key.
+   No plaintext terms pass through any server or the blockchain.
+4. PDFs (paystubs, credential certificates, audit authorizations) are generated
+   client-side only. No upload, no third-party PDF service. The browser
+   generates the document in-memory and triggers a local download.
+5. The `PayrollRunManifest` is immutable once compiled. Content-addressed by
    BLAKE3; `batch_id` changes if any row changes.
+6. Credential NFT art is deterministic and rendered client-side from the
+   credential's BLAKE3 hash. No image is stored on-chain or on any server —
+   the same hash always produces the same visual, pixel-for-pixel.
 
 ---
 
