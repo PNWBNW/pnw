@@ -24,7 +24,7 @@
 
 1. **Connect wallet** — Shield, Puzzle, Leo, Fox, or Soter via the official `@provablehq/aleo-wallet-adaptor-*` package. The wallet provides the Aleo address; the portal never touches private keys.
 
-2. **Register a `.pnw` name** — the employer calls `pnw_name_registrar_v5.aleo::register_employer_name`, which binds a human-readable name (e.g. `acme_corp.pnw`) to their wallet address on-chain. The name hash is used as the employer's identity anchor throughout the system.
+2. **Register a `.pnw` name** — the employer calls `pnw_name_registrar_v5.aleo::register_employer_name`, which binds a human-readable name (e.g. `acme_corp.pnw`) to their wallet address on-chain. The name hash is used as the employer's identity anchor throughout the system. The `.pnw` name system includes a **full bidirectional resolver** — forward (name → address) and reverse (address → name) — so every surface in the system displays human-readable identities instead of raw Aleo addresses: paystub PDFs, credential card headers, the employer's worker list, and the worker dashboard all resolve `.pnw` names from on-chain data. One name per wallet, soulbound, non-transferable — worker OR employer, not both.
 
 3. **Create an agreement** — the portal encrypts the full employment terms client-side (AES-256-GCM), pins the ciphertext to IPFS via Pinata, and broadcasts a `PendingAgreement` record on-chain via `employer_agreement_v4.aleo::create_job_offer`. Only the employer and worker hold the decryption key, derived from the private `parties_key` field. No plaintext terms touch the blockchain or any server.
 
