@@ -66,10 +66,11 @@ PNW drives three categories of Aleo ecosystem value:
 - **Generative credential NFT art system** — deterministic topographic card art derived from BLAKE3 credential hashes, 4 credential type palettes, multi-peak terrain rendering
 - **Previous recognition:** Aleo Buildathon participant (April 2026)
 
-### Repositories
+### Repositories & Live Demo
 
-| Repository | Purpose | Link |
+| Resource | Purpose | Link |
 |---|---|---|
+| **Live Portal** | Deployed dApp (Aleo testnet) | [pnw-employment-portal-v1.vercel.app](https://pnw-employment-portal-v1.vercel.app/) |
 | `pnw` | Master index (submodules) | [github.com/PNWBNW/pnw](https://github.com/PNWBNW/pnw) |
 | `pnw_mvp_v2` | Leo programs, adapters, commitment primitives | [github.com/PNWBNW/pnw_mvp_v2](https://github.com/PNWBNW/pnw_mvp_v2) |
 | `pnw_employment_portal_v1` | Next.js portal (employer + worker dApp) | [github.com/PNWBNW/pnw_employment_portal_v1](https://github.com/PNWBNW/pnw_employment_portal_v1) |
@@ -437,6 +438,10 @@ Each credential NFT renders as a unique topographic blueprint card:
 6. Immutable manifests — content-addressed by BLAKE3, tampering changes the batch_id
 7. Encrypted W-4 tax data — parties_key derived independently by both parties
 8. Client-side tax computation — no payroll amounts sent to any external service
+
+### Live Demo
+
+- **Portal (Vercel):** [pnw-employment-portal-v1.vercel.app](https://pnw-employment-portal-v1.vercel.app/)
 
 ### GitHub Repositories
 
