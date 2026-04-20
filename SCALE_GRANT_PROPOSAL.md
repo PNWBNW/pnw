@@ -61,7 +61,6 @@ PNW drives three categories of Aleo ecosystem value:
 - **11 Leo programs deployed and tested on Aleo testnet** — payroll settlement, agreement lifecycle, credential NFTs with cross-program authorization, audit anchoring, name registry with bidirectional resolver, employer verification gate
 - **First end-to-end private payroll execution on Aleo** (April 10, 2026) — verified agreement, transferred USDCx privately, minted receipts, anchored audit event, minted cycle NFT — all in a single session from a browser-based portal
 - **Multi-worker payroll tested** with 3 workers in sequential execution with automatic USDCx remainder-record handling
-- **5-wallet integration** — Shield, Puzzle, Leo, Fox, and Soter wallets via official @provablehq/aleo-wallet-adaptor-* packages
 - **Client-side federal tax engine** implementing IRS Publication 15-T annualization method — brackets, FICA, Medicare computed entirely in-browser with no external service
 - **Generative credential NFT art system** — deterministic topographic card art derived from BLAKE3 credential hashes, 4 credential type palettes, multi-peak terrain rendering
 - **Previous recognition:** Aleo Buildathon participant (April 2026)
