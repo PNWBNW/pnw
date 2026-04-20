@@ -228,7 +228,7 @@ Each worker's payroll settles in 4 independent ZK proofs:
 3. `paystub_receipts::mint_paystub_receipts` — mint receipt records for both parties
 4. `payroll_audit_log::anchor_event` — anchor tamper-proof audit hash
 
-This sequential approach ensures compatibility with all 5 supported wallets (Shield wallet's WASM prover cannot handle the monolithic 5-program proof).
+This sequential approach ensures compatibility with Shield wallet's in-browser WASM prover, which cannot handle a monolithic 5-program proof in a single transaction.
 
 **5. Client-Side Tax Engine**
 
@@ -265,41 +265,25 @@ Each credential NFT renders as a unique topographic blueprint card:
 - Worker's `.pnw` name + truncated Aleo address in card header
 - Downloadable as PNG, printable as PDF certificate
 
-### Architecture Diagram
+### Data Flow
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│  EMPLOYER BROWSER                          WORKER BROWSER           │
-│  ┌──────────────┐                         ┌──────────────┐          │
-│  │ Payroll Table │──compile──►Manifest     │   W-4 Form   │          │
-│  │   Tax Engine  │           │batch_id│    │  Timesheet   │          │
-│  │  PDF Generator│           │row_root│    │  Credentials │          │
-│  └──────┬───────┘           └───┬─────┘   │  Paystubs    │          │
-│         │                       │          └──────┬───────┘          │
-│         ▼                       ▼                  │                  │
-│  ┌──────────────┐    ┌─────────────────┐          │                  │
-│  │   Adapter    │    │  IPFS (Pinata)  │◄─AES-GCM─┘                  │
-│  │   Layer      │    │  encrypted W-4  │                              │
-│  └──────┬───────┘    │  encrypted terms│                              │
-│         │            └─────────────────┘                              │
-└─────────┼────────────────────────────────────────────────────────────┘
-          │ 4 ZK proofs per worker
-          ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│  ALEO TESTNET                                                        │
-│                                                                      │
-│  employer_agreement_v4 ─── assert_agreement_active                   │
-│  test_usdcx_stablecoin ─── transfer_private (wages)                  │
-│  paystub_receipts ──────── mint_paystub_receipts (worker + employer) │
-│  payroll_audit_log ─────── anchor_event (hash-only)                  │
-│  payroll_nfts_v2 ──────── mint_cycle_nft (batch anchor)              │
-│  credential_nft_v3 ────── mint_credential_nft (3 auth checks)        │
-│  pnw_name_registry_v2 ─── .pnw identity (soulbound)                 │
-│                                                                      │
-│  PUBLIC STATE: only hashes, commitments, anchors                     │
-│  PRIVATE STATE: wages, names, addresses, terms, tax data             │
-└─────────────────────────────────────────────────────────────────────┘
-```
+**Browser Layer (no backend, no database):**
+
+Employer browser: Payroll Table + Tax Engine + PDF Generator --> compiles --> PayrollRunManifest (batch_id, row_root) --> Adapter Layer --> 4 ZK proofs per worker --> Aleo Testnet
+
+Worker browser: W-4 Form, Timesheet, Credentials, Paystubs --> AES-256-GCM encrypted --> IPFS (Pinata) for cross-browser sharing
+
+**Aleo Testnet (on-chain programs called per payroll run):**
+
+1. employer_agreement_v4: assert_agreement_active
+2. test_usdcx_stablecoin: transfer_private (wages)
+3. paystub_receipts: mint_paystub_receipts (worker + employer copies)
+4. payroll_audit_log: anchor_event (hash-only)
+5. payroll_nfts_v2: mint_cycle_nft (batch anchor)
+6. credential_nft_v3: mint_credential_nft (3 cross-program auth checks)
+7. pnw_name_registry_v2: .pnw identity (soulbound, bidirectional resolver)
+
+**On-chain privacy rule:** Public state contains only hashes, commitments, and anchors. Private state (wages, names, addresses, terms, tax data) lives exclusively in private records decryptable only by their owner.
 
 ### Timeline for Remaining Components
 
