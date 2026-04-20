@@ -303,56 +303,55 @@ Worker browser: W-4 Form, Timesheet, Credentials, Paystubs --> AES-256-GCM encry
 
 ## Funding & Milestones
 
+**Funding Request: $100,000**
+
 ### Budget Breakdown
 
-| Phase | Deliverables | Timeline | Estimated Cost |
+| Phase | Deliverables | Timeline | Cost |
 |---|---|---|---|
-| **Phase A: Hardening** | Multi-worker batch (25+), double-pay guard, step recovery, mobile responsive | Months 1-2 | $15,000 |
-| **Phase B: Tax & Compliance** | State tax engine expansion, W-2/1099 generation, employer tax reporting | Months 3-4 | $20,000 |
-| **Phase C: Mainnet Prep** | USDCx mainnet integration, name registry migration, program upgrades | Months 4-5 | $15,000 |
-| **Phase D: Security Audit** | External audit of all 11 Leo programs + portal security review | Months 5-6 | $30,000 |
-| **Phase E: Mainnet Launch** | Deployment, monitoring, documentation, onboarding materials | Months 7-8 | $10,000 |
-| **Phase F: Growth** | API for third-party integrations, multi-employer dashboard, DAO governance | Months 9-12 | $25,000 |
-| **Infrastructure** | IPFS pinning (Pinata), testnet/mainnet RPC, domain, hosting | 12 months | $5,000 |
-| | | **Total** | **$120,000** |
+| **Phase A: Hardening** | Multi-worker batch (25+), double-pay guard, step recovery, mobile responsive | Months 1-2 | $18,000 |
+| **Phase B: Tax & Compliance** | State tax engine (top 5 states), W-2/1099 generation | Months 3-4 | $15,000 |
+| **Phase C: Mainnet Prep** | USDCx mainnet integration, name registry migration, program upgrades | Months 4-6 | $17,000 |
+| **Phase D: Security Review** | External security review of Leo programs + portal penetration testing | Months 5-7 | $25,000 |
+| **Phase E: Mainnet Launch** | Deployment, documentation, onboarding first employers | Months 7-9 | $12,000 |
+| **Phase F: Ecosystem Growth** | Developer docs, credential verification portal, community onboarding | Months 9-12 | $8,000 |
+| **Infrastructure** | IPFS pinning (Pinata), RPC access, domain, Vercel hosting | 12 months | $5,000 |
+| | | **Total** | **$100,000** |
 
 ### Milestone Schedule
 
-**Months 1-2: Production Hardening**
+**Months 1-2: Production Hardening ($18,000)**
 - [ ] Multi-worker payroll supporting 25+ workers per run with automatic USDCx change-record handling
 - [ ] Double-pay protection deployed (epoch-based guard preventing duplicate payroll for same worker/period)
 - [ ] Step failure recovery — resume from any failed step without restarting the entire run
 - [ ] Mobile-responsive portal tested on iOS Safari and Android Chrome
-- **Exit criteria:** 25-worker payroll run completes successfully on testnet in under 30 minutes
+- **Exit criteria:** 25-worker payroll run completes successfully on testnet
 
-**Months 3-4: Tax & Compliance Expansion**
-- [ ] State income tax engine for top 10 US states by employment
+**Months 3-4: Tax & Compliance ($15,000)**
+- [ ] State income tax engine for top 5 US states by employment (CA, TX, FL, NY, WA)
 - [ ] Automated W-2 and 1099-NEC generation (client-side PDF, encrypted storage)
-- [ ] Employer quarterly tax reporting summary (Form 941 equivalent)
 - [ ] Worker timesheet data encrypted and shared via on-chain records for payroll auto-population
 - **Exit criteria:** Complete payroll cycle including tax forms generated for a 10-worker employer
 
-**Months 5-6: Security Audit + Mainnet Preparation**
-- [ ] External security audit of all deployed Leo programs (formal verification where possible)
-- [ ] Portal security review (XSS, injection, key handling, session management)
+**Months 4-7: Security Review + Mainnet Prep ($42,000)**
+- [ ] External security review of all deployed Leo programs
+- [ ] Portal penetration testing (XSS, injection, key handling, session management)
 - [ ] USDCx mainnet integration testing with Sealance production proofs
 - [ ] Name registry migration plan (testnet `.pnw` names → mainnet)
-- **Exit criteria:** Audit report with no critical/high findings; mainnet deployment plan approved
-
-**Months 7-8: Mainnet Launch**
 - [ ] Deploy all 11 programs to Aleo mainnet
+- **Exit criteria:** Security review report with no critical findings; programs deployed to mainnet
+
+**Months 7-9: Mainnet Launch ($12,000)**
 - [ ] End-to-end payroll execution on mainnet with real USDCx
-- [ ] Documentation: employer onboarding guide, worker guide, API reference
+- [ ] Documentation: employer onboarding guide, worker guide
 - [ ] Community onboarding: first 10 employers running real payroll
 - **Exit criteria:** 10 employers onboarded, 50+ workers paid on mainnet
 
-**Months 9-12: Ecosystem Growth**
-- [ ] REST API for third-party integrations (accounting software, HR systems)
-- [ ] Multi-employer dashboard for workers with multiple jobs
-- [ ] DAO governance module for treasury-controlled payroll authorization
+**Months 9-12: Ecosystem Growth ($8,000)**
 - [ ] Credential verification portal (public verifier checks credential validity without seeing compensation)
-- [ ] Community growth: developer documentation, SDK for building on PNW
-- **Exit criteria:** 100 employers, 500 workers, 3+ third-party integrations
+- [ ] Developer documentation and integration guides
+- [ ] Community growth and onboarding pipeline
+- **Exit criteria:** 50 employers, 250 workers active on mainnet
 
 ---
 
