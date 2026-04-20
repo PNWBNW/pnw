@@ -228,7 +228,7 @@ Each worker's payroll settles in 4 independent ZK proofs:
 3. `paystub_receipts::mint_paystub_receipts` — mint receipt records for both parties
 4. `payroll_audit_log::anchor_event` — anchor tamper-proof audit hash
 
-This sequential approach ensures compatibility with Shield wallet's in-browser WASM prover, which cannot handle a monolithic 5-program proof in a single transaction.
+This sequential approach keeps each proof small and fast, ensuring reliable execution from the browser.
 
 **5. Client-Side Tax Engine**
 
