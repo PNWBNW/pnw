@@ -168,22 +168,11 @@ PNW is the only solution that achieves privacy across ALL dimensions — wages, 
 
 PNW uses a strict three-layer architecture:
 
-```
-Layer 3 — Employment Portal (Next.js 16 dApp)
-  Browser-only. No backend server. No database.
-  Compiles payroll manifests, orchestrates settlement,
-  renders UI, generates PDFs client-side.
-        │
-        ▼
-Layer 2 — NFT Commitment Programs (Aleo)
-  Credential NFTs, payroll cycle anchors, audit
-  authorization tokens. Immutable on-chain commitments.
-        │
-        ▼
-Layer 1 — Core Settlement Programs (Aleo)
-  Payroll execution, agreement lifecycle, receipt
-  minting, audit event anchoring. All private records.
-```
+**Layer 3 - Employment Portal (Next.js 16 dApp):** Browser-only. No backend server. No database. Compiles payroll manifests, orchestrates settlement, renders UI, generates PDFs client-side.
+
+**Layer 2 - NFT Commitment Programs (Aleo):** Credential NFTs, payroll cycle anchors, audit authorization tokens. Immutable on-chain commitments.
+
+**Layer 1 - Core Settlement Programs (Aleo):** Payroll execution, agreement lifecycle, receipt minting, audit event anchoring. All private records.
 
 ### Main Components
 
