@@ -103,7 +103,6 @@ PNW is not a proposal — it is a working system. The following has been built, 
 - Worker paystub viewer (wallet record scan — no view key needed)
 - Generative topographic credential art (BLAKE3-seeded, 4 palettes, PNG/PDF export)
 - Client-side PDF generation for paystubs, credentials, and audit authorizations
-- 5-wallet integration (Shield, Puzzle, Leo, Fox, Soter)
 - Encrypted agreement terms (AES-256-GCM + IPFS via Pinata)
 
 **Testnet Proof (April 10, 2026):** First successful end-to-end private payroll — 5 confirmed transactions from browser UI in a single session.
