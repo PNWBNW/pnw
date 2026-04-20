@@ -30,7 +30,14 @@
 
 4. **Worker accepts** — the worker's wallet receives the `PendingAgreement` as a private record, fetches and decrypts the terms from IPFS, and accepts on-chain via `accept_job_offer`. This mints three `FinalAgreement` records — one for the employer, one for the worker, one for the DAO — binding the two wallets in a cryptographically verifiable employment relationship.
 
-5. **Run payroll** — the employer fills a payroll table in the portal, which compiles it into a deterministic `PayrollRunManifest` (content-addressed by BLAKE3). The settlement coordinator executes each worker's payroll via `payroll_core_v2.aleo::execute_payroll`, which atomically:
+5. **Run payroll** — the employer opens the payroll table, selects workers, and the pipeline auto-computes everything:
+   - **Pay rate** auto-fills from the agreement (hourly rate or salary per period)
+   - **Hours** entered by employer (hourly workers) or auto-fills (salary)
+   - **Gross** = rate × hours (hourly) or fixed amount (salary)
+   - **Tax** auto-computed by the built-in federal tax engine using each worker's W-4 data (filing status, dependents, adjustments) via the IRS annualization method — brackets auto-adjust based on projected 12-month income
+   - **Net** = gross − tax − fee
+
+   The compiled `PayrollRunManifest` (content-addressed by BLAKE3) is then settled on-chain via `payroll_core_v2.aleo::execute_payroll`, which atomically:
    - Verifies the agreement is active (`employer_agreement_v4::assert_agreement_active`)
    - Transfers USDCx privately via Sealance-compliant Merkle exclusion proofs (`test_usdcx_stablecoin::transfer_private`)
    - Mints private paystub receipts for both worker and employer (`paystub_receipts::mint_paystub_receipts`)
@@ -48,6 +55,10 @@
    Each mint emits **two** `CredentialNFT` records in a single transition — one owned by the employer (authoritative) and one owned by the worker (visible in their wallet). Both carry the same `credential_id`. Unauthorized mints revert at the contract level.
 
 ### The Worker Experience
+
+- **W-4 Tax Withholding** — after accepting an agreement, the worker completes a W-4 form in the portal (Step 1: filing status, Step 2: multiple jobs, Step 3: dependents with $2,000/$500 credits, Step 4: other income/deductions/extra withholding). The official IRS W-4 PDF is served directly from the portal for zero-friction download → fill → upload. The portal reads the PDF's AcroForm fields via `pdf-lib` and pre-fills the web form. On submit, the W-4 data is encrypted with the shared `parties_key` (AES-256-GCM, derived from both wallet addresses via BLAKE3) and pinned to IPFS. The employer decrypts it independently using the same derived key — no key exchange needed. The W-4 feeds directly into the tax engine so each worker's payroll is computed with their own filing status, dependent credits, and adjustments.
+
+- **Timesheet** — workers clock in and out from the Timesheet tab. Time entries are stored in localStorage keyed by wallet address. The dashboard shows weekly hours with a progress bar toward 40 hours and a pulsing indicator when clocked in. Hours feed into the payroll table's Hours column for auto-calculated gross pay.
 
 - **Credentials** — the worker connects their wallet and navigates to the Credentials tab. The portal scans for `CredentialNFT` records owned by the connected address. Each credential renders as a unique generative topographic blueprint card — 1-5 mountain peaks, contour rings, and a profile silhouette, all deterministically derived from the credential's BLAKE3 hash. Four credential types produce four distinct color palettes (cyan, gold, parchment, forest). The worker's `.pnw` name and truncated Aleo address appear in the card header. Workers can download the art as PNG or print a PDF certificate.
 
@@ -71,8 +82,16 @@ pnw_employment_portal_v1 (Layer 3)
 ├── src/coordinator/            ← settlement orchestration + wallet polling
 ├── src/records/                ← wallet record scanners (paystubs, credentials, agreements)
 ├── src/credentials/            ← credential hash computation + wallet mint calls
+├── src/stores/
+│   ├── w4_store.ts             ← W-4 tax withholding elections per wallet
+│   └── timesheet_store.ts      ← clock-in/out time entries per wallet
+├── src/lib/
+│   ├── tax-engine.ts           ← federal payroll tax computation (annualization method)
+│   ├── w4-crypto.ts            ← parties_key AES-256-GCM encryption for W-4 IPFS sharing
+│   ├── w4-pdf-parser.ts        ← IRS W-4 PDF AcroForm field reader (pdf-lib)
+│   └── logger.ts               ← structured logger with tag filtering + trace IDs
 ├── src/nft-art/                ← generative topographic renderer (Canvas 2D)
-│   ├── hash_params.ts          ← credential_id → terrain parameters
+│   ├── hash_params.ts          ← credential_id → terrain parameters (multi-peak)
 │   └── topo_renderer.ts        ← heightmap → contours → profile → card
 │
 └── components/
@@ -133,6 +152,10 @@ The portal compiles manifests, orchestrates settlement, and renders UI. The Leo 
 5. **Deterministic credential art.** Each credential's visual is a pure function of its BLAKE3 hash — rendered client-side on Canvas, no image stored anywhere. Same hash always produces the same pixels.
 
 6. **Immutable manifests.** The `PayrollRunManifest` is content-addressed by BLAKE3. Changing any row changes the `batch_id`, making tampering detectable.
+
+7. **Encrypted W-4 tax data.** Worker W-4 elections (filing status, dependents, adjustments) are encrypted with the shared `parties_key` (AES-256-GCM, derived independently by both parties from their wallet addresses via BLAKE3) before being pinned to IPFS. No plaintext tax data on any server — the employer decrypts using the same derived key.
+
+8. **Client-side tax computation.** Federal income tax, Social Security, and Medicare are computed entirely in the browser using the IRS annualization method. No payroll amounts are sent to any external tax service.
 
 ---
 
