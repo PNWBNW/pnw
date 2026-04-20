@@ -61,6 +61,7 @@ PNW drives three categories of Aleo ecosystem value:
 - **11 Leo programs deployed and tested on Aleo testnet** — payroll settlement, agreement lifecycle, credential NFTs with cross-program authorization, audit anchoring, name registry with bidirectional resolver, employer verification gate
 - **First end-to-end private payroll execution on Aleo** (April 10, 2026) — verified agreement, transferred USDCx privately, minted receipts, anchored audit event, minted cycle NFT — all in a single session from a browser-based portal
 - **Multi-worker payroll tested** with 3 workers in sequential execution with automatic USDCx remainder-record handling
+- **Wallet integration** — Shield wallet via official @provablehq/aleo-wallet-adaptor-shield package (additional wallets planned)
 - **Client-side federal tax engine** implementing IRS Publication 15-T annualization method — brackets, FICA, Medicare computed entirely in-browser with no external service
 - **Generative credential NFT art system** — deterministic topographic card art derived from BLAKE3 credential hashes, 4 credential type palettes, multi-peak terrain rendering
 - **Previous recognition:** Aleo Buildathon participant (April 2026)
@@ -103,6 +104,7 @@ PNW is not a proposal — it is a working system. The following has been built, 
 - Worker paystub viewer (wallet record scan — no view key needed)
 - Generative topographic credential art (BLAKE3-seeded, 4 palettes, PNG/PDF export)
 - Client-side PDF generation for paystubs, credentials, and audit authorizations
+- Shield wallet integration via official @provablehq/aleo-wallet-adaptor-shield
 - Encrypted agreement terms (AES-256-GCM + IPFS via Pinata)
 
 **Testnet Proof (April 10, 2026):** First successful end-to-end private payroll — 5 confirmed transactions from browser UI in a single session.
@@ -401,7 +403,7 @@ Each credential NFT renders as a unique topographic blueprint card:
 ### 3. Collaborative Value (Potential for Collaboration)
 
 **Ecosystem Partner Integration Points:**
-- **Wallet teams (Shield, Puzzle, Leo, Fox, Soter):** PNW is already integrated with all 5 wallets — payroll runs are a high-engagement use case that drives daily wallet opens
+- **Wallet teams:** PNW is integrated with Shield wallet and architected to support additional wallets (Puzzle, Leo, Fox, Soter) — payroll runs are a high-engagement use case that drives daily wallet opens
 - **zPass:** PNW's credential NFTs could integrate with zPass for cross-platform identity verification — a worker's employment credential from PNW could be verifiable in any zPass-compatible application
 - **USDCx / Sealance:** PNW is a live consumer of USDCx with Sealance compliance proofs — direct feedback loop for the stablecoin team on real-world usage patterns
 - **Developer tools:** PNW's adapter boundary pattern, content-addressed manifests, and multi-program settlement coordinator are reference implementations for Aleo dApp developers
